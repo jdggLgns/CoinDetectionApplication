@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="camera_button_ico">📷</string>
+    <string name="coin_detector">Coin Detector</string>
+</resources>

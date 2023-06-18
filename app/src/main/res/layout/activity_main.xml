@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E5F2FF">
+
+    <TextView
+        android:id="@+id/title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif"
+        android:text="@string/coin_detector"
+        android:textColor="#007AFF"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:transformPivotX="50dp"
+        android:transformPivotY="50dp"
+        android:rotationX="0"
+        android:translationZ="16dp"/>
+
+
+    <Button
+        android:id="@+id/camera_button"
+        android:layout_width="241dp"
+        android:layout_height="253dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/orange_rounded_button"
+        android:elevation="8dp"
+        android:text="@string/camera_button_ico"
+        android:textColor="#FFFFFF"
+        android:textSize="72sp" />
+
+</RelativeLayout>
