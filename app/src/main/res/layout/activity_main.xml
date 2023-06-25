@@ -1,35 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E5F2FF">
+    android:background="#FFC107"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/logo_imageview"
+        android:layout_width="109dp"
+        android:layout_height="64dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/button_reconocimiento_voz"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/logoPrincipal" />
 
     <TextView
-        android:id="@+id/title_textview"
+        android:id="@+id/question_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:text="¿QUÉ DESEAS COMPRAR?"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textSize="28sp"
         android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif"
-        android:text="@string/coin_detector"
-        android:textColor="#007AFF"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:transformPivotX="50dp"
-        android:transformPivotY="50dp"
-        android:rotationX="0"
-        android:translationZ="16dp"/>
+        android:layout_marginTop="28dp"
+        android:shadowColor="#80000000"
+        android:shadowDx="8"
+        android:shadowDy="8"
+        android:textColor="@color/white"
+        android:shadowRadius="4" />
+
+
+
+
+    <ImageView
+        android:id="@+id/transporteRescalado"
+        android:adjustViewBounds="true"
+        android:layout_width="161dp"
+        android:layout_height="97dp"
+        android:layout_below="@id/question_textview"
+        android:clickable="true"
+        android:onClick="onImageTransportButtonClicked"
+        android:scaleType="centerInside"
+        android:src="@drawable/transporteRescalado"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        /><!-- agregar funcion de pulsado -->
+
+
+    <ImageView
+        android:id="@+id/alimentos"
+        android:layout_width="161dp"
+        android:layout_height="97dp"
+        android:layout_below="@id/transporteRescalado"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:onClick="onImageAlimentsButtonClicked"
+        android:scaleType="centerInside"
+        android:src="@drawable/alimentos" /><!-- agregar funcion de pulsado -->
 
 
     <Button
-        android:id="@+id/camera_button"
-        android:layout_width="241dp"
-        android:layout_height="253dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/orange_rounded_button"
-        android:elevation="8dp"
-        android:text="@string/camera_button_ico"
-        android:textColor="#FFFFFF"
-        android:textSize="72sp" />
+        android:id="@+id/button_insertar_mano"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alimentos"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Insertar a mano"/>
+
+    <Button
+        android:id="@+id/button_reconocimiento_voz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_insertar_mano"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Reconocimiento por voz"/>
 
 </RelativeLayout>
