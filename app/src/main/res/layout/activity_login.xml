@@ -12,7 +12,7 @@
         android:layout_height="234dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
-        android:src="@drawable/logoPrincipal" />
+        android:src="@drawable/logo_principal" />
 
     <EditText
         android:id="@+id/username_edittext"

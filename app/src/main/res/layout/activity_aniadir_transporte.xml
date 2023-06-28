@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFC107"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AÑADIR PRODUCTO"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textSize="28sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:shadowColor="#80000000"
+        android:shadowDx="12"
+        android:shadowDy="12"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:shadowRadius="4" />
+
+    <EditText
+        android:id="@+id/product_name_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="NOMBRE DEL PRODUCTO"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/title"
+        android:background="@android:color/white" />
+
+    <EditText
+        android:id="@+id/price_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="PRECIO"
+        android:layout_below="@id/product_name_edittext"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/white" />
+
+    <Button
+        android:id="@+id/add_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/price_edittext"
+        android:layout_marginTop="20dp"
+        android:text="Agregar imagen"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:background="@color/cardview_light_background"
+        android:padding="10dp"/>
+
+    <Button
+        android:id="@+id/accept_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_image_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Aceptar"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:background="@color/cardview_light_background"
+        android:padding="10dp" />
+
+</RelativeLayout>

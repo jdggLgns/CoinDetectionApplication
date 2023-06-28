@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/button_reconocimiento_voz"
         android:layout_marginTop="70dp"
-        android:src="@drawable/logoPrincipal" />
+        android:src="@drawable/logo_principal" />
 
     <TextView
         android:id="@+id/question_textview"
@@ -25,16 +25,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="28dp"
         android:shadowColor="#80000000"
-        android:shadowDx="8"
-        android:shadowDy="8"
+        android:shadowDx="12"
+        android:shadowDy="12"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:shadowRadius="4" />
 
-
-
-
     <ImageView
-        android:id="@+id/transporteRescalado"
+        android:id="@+id/transporte_rescalado"
         android:adjustViewBounds="true"
         android:layout_width="161dp"
         android:layout_height="97dp"
@@ -42,7 +40,7 @@
         android:clickable="true"
         android:onClick="onImageTransportButtonClicked"
         android:scaleType="centerInside"
-        android:src="@drawable/transporteRescalado"
+        android:src="@drawable/transporte_rescalado"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="33dp"
         /><!-- agregar funcion de pulsado -->
@@ -52,7 +50,7 @@
         android:id="@+id/alimentos"
         android:layout_width="161dp"
         android:layout_height="97dp"
-        android:layout_below="@id/transporteRescalado"
+        android:layout_below="@id/transporte_rescalado"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="33dp"
         android:adjustViewBounds="true"
