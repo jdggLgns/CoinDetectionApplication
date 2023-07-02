@@ -10,9 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.R;
-import com.example.myapplication.RegisterActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +20,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -115,12 +111,11 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, CamaraActivity.class);
                 startActivity(intent);
                 finish();
             } else {

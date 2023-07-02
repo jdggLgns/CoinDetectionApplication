@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static java.sql.DriverManager.println;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,8 +36,9 @@ public class TotalValueActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Volver a la pantalla principal
-                Intent intent = new Intent(TotalValueActivity.this, MainActivity.class);
-                startActivity(intent);
+               // Intent intent = new Intent(TotalValueActivity.this, MainActivity.class);
+               // startActivity(intent);
+                println("hasta aqui llego");
             }
         });
     }
