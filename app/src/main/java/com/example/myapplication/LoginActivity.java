@@ -81,13 +81,17 @@ public class LoginActivity extends AppCompatActivity {
                 URL url = new URL("http://52.212.181.135/login");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/json");
                 connection.setDoOutput(true);
 
-                String parameters = "userid=" + URLEncoder.encode(username, "UTF-8") +
-                        "&password=" + URLEncoder.encode(password, "UTF-8");
+                // Create JSON object with the username and password
+                JSONObject jsonParams = new JSONObject();
+                jsonParams.put("userid", username);
+                jsonParams.put("password", password);
 
+                // Write the JSON parameters to the request body
                 OutputStream outputStream = connection.getOutputStream();
-                outputStream.write(parameters.getBytes("UTF-8"));
+                outputStream.write(jsonParams.toString().getBytes("UTF-8"));
                 outputStream.flush();
                 outputStream.close();
 
@@ -111,11 +115,14 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
+
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                // Aquí puedes agregar el código para redirigir a la actividad principal o hacer cualquier otra acción necesaria después del inicio de sesión exitoso
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
             }
