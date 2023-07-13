@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFC107"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INSERTAR PRECIO A MANO"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textSize="28sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:shadowColor="#80000000"
+        android:shadowDx="12"
+        android:shadowDy="12"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:shadowRadius="4" />
+
+    <ImageView
+        android:id="@+id/logo_imageview"
+        android:layout_width="259dp"
+        android:layout_height="234dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:layout_below="@id/title"
+        android:src="@drawable/logo_principal" />
+
+
+    <EditText
+        android:id="@+id/precio_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_imageview"
+        android:layout_marginTop="24dp"
+        android:hint="INSERTAR PRECIO"
+        android:inputType="numberDecimal"
+        android:padding="8dp"
+        android:textSize="18sp"
+        android:background="@drawable/edittext_background" />
+
+    <ImageView
+        android:id="@+id/home"
+        android:layout_width="109dp"
+        android:layout_height="64dp"
+        android:layout_below="@id/precio_edittext"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/home" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/precio_edittext"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="140dp"
+        android:text="Aceptar" />
+
+</RelativeLayout>

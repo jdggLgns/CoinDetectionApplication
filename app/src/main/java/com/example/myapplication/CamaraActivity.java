@@ -108,7 +108,6 @@ public class CamaraActivity extends AppCompatActivity {
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
-            // Envía la imagen al servidor en el cuerpo de la solicitud
             OutputStream outputStream = connection.getOutputStream();
             outputStream.write(encodedImage.getBytes());
             outputStream.flush();

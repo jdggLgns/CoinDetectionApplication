@@ -36,7 +36,14 @@
         <activity
             android:name=".CamaraActivity"
             android:label="Camara Activity" />
-
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".TransporteActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />

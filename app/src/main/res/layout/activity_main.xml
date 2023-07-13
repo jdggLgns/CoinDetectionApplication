@@ -11,8 +11,8 @@
         android:layout_width="109dp"
         android:layout_height="64dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/button_reconocimiento_voz"
-        android:layout_marginTop="70dp"
+        android:layout_below="@id/button_insertar_mano"
+        android:layout_marginTop="30dp"
         android:src="@drawable/logo_principal" />
 
     <TextView
@@ -57,7 +57,7 @@
         android:clickable="true"
         android:onClick="onImageAlimentsButtonClicked"
         android:scaleType="centerInside"
-        android:src="@drawable/alimentos" /><!-- agregar funcion de pulsado -->
+        android:src="@drawable/alimentos" />
 
 
     <Button
@@ -66,16 +66,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/alimentos"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="33dp"
         android:text="Insertar a mano"/>
 
-    <Button
-        android:id="@+id/button_reconocimiento_voz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/button_insertar_mano"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Reconocimiento por voz"/>
+
 
 </RelativeLayout>

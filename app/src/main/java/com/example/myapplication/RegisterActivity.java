@@ -20,9 +20,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.util.Properties;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private String ipServices;
 
     private EditText nameEditText;
     private EditText mailEditText;
@@ -34,6 +36,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        Properties properties = ProjectProperties.getProperties();
+        ipServices = properties.getProperty("ip_services");
 
         nameEditText = findViewById(R.id.name_edittext);
         mailEditText = findViewById(R.id.mail_edittext);
@@ -71,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
             String password = params[3];
 
             try {
-                URL url = new URL("http://52.212.181.135/register");
+                URL url = new URL("http://" + ipServices + "/register");
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
