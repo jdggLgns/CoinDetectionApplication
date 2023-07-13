@@ -65,7 +65,7 @@ def modificar_producto(idprod):
     return jsonify(response)
 
 
-@app.route('/products/usuario/<int:userid>', methods=['GET'])
+@app.route('/products/usuario/<string:userid>', methods=['GET'])
 def listar_productos_usuario(userid):
     productos = GestionProductos.listar_by_user(_userid=userid)
     response = {'success': True, 'productos': productos}
