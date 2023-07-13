@@ -93,12 +93,10 @@ public class LoginActivity extends AppCompatActivity {
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setDoOutput(true);
 
-                // Create JSON object with the username and password
                 JSONObject jsonParams = new JSONObject();
                 jsonParams.put("userid", userId);
                 jsonParams.put("password", password);
 
-                // Write the JSON parameters to the request body
                 OutputStream outputStream = connection.getOutputStream();
                 outputStream.write(jsonParams.toString().getBytes("UTF-8"));
                 outputStream.flush();
@@ -135,8 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("userId", userId);
                 editor.apply();
-                //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                Intent intent = new Intent(LoginActivity.this, CamaraActivity.class);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {

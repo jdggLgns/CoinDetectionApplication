@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -43,13 +44,13 @@ public class TransporteActivity extends AppCompatActivity {
         transportButtonLayout = findViewById(R.id.transport_button_layout);
         addProductButton = findViewById(R.id.add_product_button);
 
-        /*addProductButton.setOnClickListener(new View.OnClickListener() {
+        addProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createTransportButton();
+                Intent intent = new Intent(TransporteActivity.this, TransporteActivity.class);
+                startActivity(intent);
             }
-        });*/
-
+        });
         userId = getSharedPreferences("MyPrefs", MODE_PRIVATE).getString("userId", "");
         getProductsByUserId();
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFC107"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/logo_imageview"
+        android:layout_width="200dp"
+        android:layout_height="133dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/logo_principal" />
+    <EditText
+        android:id="@+id/name_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_imageview"
+        android:layout_marginTop="16dp"
+        android:hint="Nombre"
+        android:inputType="text"/>
+
+
+    <EditText
+        android:id="@+id/mail_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_edittext"
+        android:layout_marginTop="8dp"
+        android:hint="Correo"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/userid_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mail_edittext"
+        android:layout_marginTop="8dp"
+        android:hint="Usuario"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/password_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userid_edittext"
+        android:layout_marginTop="16dp"
+        android:hint="Contraseña"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password_edittext"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:text="Registrarse"/>
+
+
+</RelativeLayout>
