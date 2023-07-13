@@ -47,7 +47,7 @@ public class TransporteActivity extends AppCompatActivity {
         addProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TransporteActivity.this, TransporteActivity.class);
+                Intent intent = new Intent(TransporteActivity.this, AniadirProductoActivity.class);
                 startActivity(intent);
             }
         });
@@ -74,7 +74,6 @@ public class TransporteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(TransporteActivity.this, "Transport Button " + transportButton.getId() + " clicked", Toast.LENGTH_SHORT).show();
-                // Implementar acciones al hacer clic en el botón de transporte específico
             }
         });
 
@@ -112,7 +111,7 @@ public class TransporteActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                URL url = new URL("http://" + ipServices + "/get-products?userId=" + userId);
+                URL url = new URL("http://" + ipServices + "/products/usuario/" + userId);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
 

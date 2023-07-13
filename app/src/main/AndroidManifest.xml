@@ -37,6 +37,9 @@
             android:name=".CamaraActivity"
             android:label="Camara Activity" />
         <activity
+            android:name=".AniadirProductoActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="false">
         </activity>

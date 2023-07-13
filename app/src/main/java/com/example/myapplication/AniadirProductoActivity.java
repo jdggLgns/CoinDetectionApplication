@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Properties;
 
 public class AniadirProductoActivity extends AppCompatActivity {
 
@@ -39,6 +40,7 @@ public class AniadirProductoActivity extends AppCompatActivity {
                 String productName = productNameEditText.getText().toString();
                 String price = priceEditText.getText().toString();
                 String userId = sharedPreferences.getString("userId", "");
+                //coger el tipo de producto a traveés de la sesión
                 CreateProductTask createProductTask = new CreateProductTask();
                 createProductTask.execute(userId, productName, price);
             }
@@ -52,7 +54,12 @@ public class AniadirProductoActivity extends AppCompatActivity {
             String userId = params[0];
             String productName = params[1];
             String price = params[2];
-            String url = "http://3.249.85.29:5003/products";
+
+            ProjectProperties projectProperties = new ProjectProperties();
+            Properties properties = projectProperties.getProperties();
+            String ip = properties.getProperty("ip_services");
+
+            String url = "http://" + ip + "/products";
 
             try {
                 URL apiUrl = new URL(url);
@@ -60,7 +67,7 @@ public class AniadirProductoActivity extends AppCompatActivity {
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setDoOutput(true);
-                String requestBody = "{\"userid\":\"" + userId + "\", \"descripcion\":\"" + productName + "\", \"precio\":\"" + price + "\", \"tipo\":\"\"}";
+                String requestBody = "{\"userid\":\"" + userId + "\", \"descripcion\":\"" + productName + "\", \"precio\":\"" + price + "\", \"tipo\":\"Transporte\"}";
                 DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
                 wr.writeBytes(requestBody);
                 wr.flush();
