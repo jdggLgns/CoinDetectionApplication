@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -20,20 +22,29 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Properties;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private String ipServices;
 
     private EditText usernameEditText;
     private EditText passwordEditText;
     private Button loginButton;
     private Button registerButton;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Properties properties = ProjectProperties.getProperties();
+        ipServices = properties.getProperty("ip_services");
         Toast.makeText(LoginActivity.this, "Bienvenido a CoinDetection, por favor inicie sesión o regístrese", Toast.LENGTH_LONG).show();
+
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
         usernameEditText = findViewById(R.id.username_edittext);
         passwordEditText = findViewById(R.id.password_edittext);
@@ -68,13 +79,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class LoginAsyncTask extends AsyncTask<String, Void, Boolean> {
+        private String userId;
+
         @Override
         protected Boolean doInBackground(String... params) {
-            String username = params[0];
+            userId = params[0];
             String password = params[1];
 
             try {
-                URL url = new URL("http://52.212.181.135/login");
+                URL url = new URL("http://" + ipServices + "/login");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
@@ -82,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Create JSON object with the username and password
                 JSONObject jsonParams = new JSONObject();
-                jsonParams.put("userid", username);
+                jsonParams.put("userid", userId);
                 jsonParams.put("password", password);
 
                 // Write the JSON parameters to the request body
@@ -103,7 +116,11 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 boolean success = jsonResponse.getBoolean("success");
 
-                return success;
+                if (success) {
+                    return true;
+                } else {
+                    return false;
+                }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -115,6 +132,10 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userId", userId);
+                editor.apply();
+                //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 Intent intent = new Intent(LoginActivity.this, CamaraActivity.class);
                 startActivity(intent);
                 finish();

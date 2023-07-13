@@ -24,12 +24,8 @@ public class TotalValueActivity extends AppCompatActivity {
 
         totalValueTextView = findViewById(R.id.total_value_text_view);
         detectAnotherImageButton = findViewById(R.id.detect_another_image_button);
-
-        // Obtener el valor total de las monedas desde el intent
         Intent intent = getIntent();
         double totalValue = intent.getDoubleExtra("totalValue", 0.0);
-
-        // Mostrar el valor total de las monedas en el TextView
         totalValueTextView.setText("Valor total de las monedas: " + totalValue + "€");
 
         detectAnotherImageButton.setOnClickListener(new View.OnClickListener() {
@@ -37,8 +33,7 @@ public class TotalValueActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Volver a la pantalla principal
                // Intent intent = new Intent(TotalValueActivity.this, MainActivity.class);
-               // startActivity(intent);
-                println("hasta aqui llego");
+               // startActivity(intent)
             }
         });
     }

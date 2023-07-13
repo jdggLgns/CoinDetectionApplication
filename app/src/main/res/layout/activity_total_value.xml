@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:background="#FFC107"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/logo_imageview"
+        android:layout_width="259dp"
+        android:layout_height="234dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/logo_principal" />
 
     <TextView
         android:id="@+id/total_value_textview"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="16dp"/>
+        android:layout_below="@id/logo_imageview"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="28sp"
+        tools:text="TE TIENEN QUE DEVOLVER \n 0.25 €" />
 
-    <Button
-        android:id="@+id/detect_another_button"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/home"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_dark"
-        android:text="¿Detectar otra imagen?"
-        android:textColor="#FFFFFF" />
+        android:layout_below="@id/total_value_textview"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/home" />
 
-</LinearLayout>
+</RelativeLayout>
