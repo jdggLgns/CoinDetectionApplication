@@ -19,7 +19,6 @@ def detect_from_file():
                                         save_txt=True,
                                         nosave=True)
 
-    # Imprimir los resultados
     detect_modificado.print_resultados(resultados)
 
     response = {'success': True, 'resultado':resultados}
