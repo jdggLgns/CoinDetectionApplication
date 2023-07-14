@@ -73,7 +73,7 @@ def listar_productos_usuario(userid):
 
 
 @app.route('/products/<int:idprod>', methods=['GET'])
-def oobtener_producto(idprod):
+def obtener_producto(idprod):
     producto = GestionProductos.obtener_por_id(_id=idprod)
     response = {'success': True, 'producto': producto}
     return jsonify(response)

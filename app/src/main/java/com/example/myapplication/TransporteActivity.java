@@ -1,11 +1,16 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +38,9 @@ public class TransporteActivity extends AppCompatActivity {
     private String ipServices;
     private String userId;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +51,9 @@ public class TransporteActivity extends AppCompatActivity {
 
         transportButtonLayout = findViewById(R.id.transport_button_layout);
         addProductButton = findViewById(R.id.add_product_button);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPreferences.edit();
 
         addProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,29 +84,51 @@ public class TransporteActivity extends AppCompatActivity {
         transportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TransporteActivity.this, "Transport Button " + transportButton.getId() + " clicked", Toast.LENGTH_SHORT).show();
+                editor.putString("precio_a_pagar", productPrice);
+                editor.apply();
+                Intent intent = new Intent(TransporteActivity.this, CamaraActivity.class);
+                startActivity(intent);
             }
         });
+        transportButton.setBackgroundColor(getResources().getColor(android.R.color.system_neutral2_400));
+
+        LinearLayout.LayoutParams imageLayoutParams = new LinearLayout.LayoutParams(
+                160, // Width
+                160  // Height
+        );
+
+        ImageView productImageView = new ImageView(this);
+        productImageView.setLayoutParams(imageLayoutParams);
+        productImageView.setImageResource(R.drawable.home);
 
         LinearLayout.LayoutParams textLayoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
+        textLayoutParams.setMarginStart(20);
+
+        LinearLayout productInfoLayout = new LinearLayout(this);
+        productInfoLayout.setLayoutParams(textLayoutParams);
+        productInfoLayout.setOrientation(LinearLayout.VERTICAL);
+        productInfoLayout.setGravity(Gravity.CENTER_VERTICAL);
 
         TextView productNameTextView = new TextView(this);
         productNameTextView.setLayoutParams(textLayoutParams);
         productNameTextView.setText(productName);
         productNameTextView.setTextColor(getResources().getColor(android.R.color.white));
-        productNameTextView.setTextSize(18);
+        productNameTextView.setTextSize(24);
 
         TextView productPriceTextView = new TextView(this);
         productPriceTextView.setLayoutParams(textLayoutParams);
         productPriceTextView.setText(productPrice);
         productPriceTextView.setTextColor(getResources().getColor(android.R.color.white));
-        productPriceTextView.setTextSize(16);
+        productPriceTextView.setTextSize(22);
 
-        transportButton.addView(productNameTextView);
-        transportButton.addView(productPriceTextView);
+        productInfoLayout.addView(productNameTextView);
+        productInfoLayout.addView(productPriceTextView);
+
+        transportButton.addView(productImageView);
+        transportButton.addView(productInfoLayout);
 
         transportButtonLayout.addView(transportButton);
     }
@@ -129,7 +162,7 @@ public class TransporteActivity extends AppCompatActivity {
                     JSONObject jsonResponse = new JSONObject(response.toString());
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
-                        products = jsonResponse.getJSONArray("products");
+                        products = jsonResponse.getJSONArray("productos");
                         return true;
                     }
                 }
