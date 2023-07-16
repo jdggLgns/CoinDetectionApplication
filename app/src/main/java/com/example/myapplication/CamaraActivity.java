@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +27,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -80,22 +82,7 @@ public class CamaraActivity extends AppCompatActivity {
 
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            try {
-                JSONObject coins = detectCoins(photo);
-                if (coins != null) {
-                    boolean success = coins.getBoolean("success");
-                    if (success) {
-                        calculateTotalValue(coins);
-
-                    } else {
-                        Toast.makeText(this, "Error en la detección de monedas", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, "Error en la detección de monedas", Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            new DetectCoinsTask().execute(photo);
         }
     }
 
@@ -136,36 +123,74 @@ public class CamaraActivity extends AppCompatActivity {
         return totalValue;
     }
 
+    private class DetectCoinsTask extends AsyncTask<Bitmap, Void, JSONObject> {
 
-    private JSONObject detectCoins(Bitmap photo) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        String encodedImage = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
+        @Override
+        protected JSONObject doInBackground(Bitmap... bitmaps) {
+            Bitmap photo = bitmaps[0];
 
-        try {
-            URL url = new URL(SERVER_URL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
+            try {
+                URL url = new URL(SERVER_URL);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "multipart/form-data");
 
-            OutputStream outputStream = connection.getOutputStream();
-            outputStream.write(encodedImage.getBytes());
-            outputStream.flush();
-            outputStream.close();
+                String boundary = "*****" + Long.toString(System.currentTimeMillis()) + "*****";
+                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
-            InputStream in = connection.getInputStream();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            while ((bytesRead = in.read(buffer)) != -1) {
-                output.write(buffer, 0, bytesRead);
+                OutputStream outputStream = connection.getOutputStream();
+                PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
+                writer.append("--").append(boundary).append("\r\n");
+                writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"image.png\"\r\n");
+                writer.append("Content-Type: image/png\r\n\r\n");
+                writer.flush();
+
+                photo.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                outputStream.flush();
+
+                writer.append("\r\n");
+                writer.append("--").append(boundary).append("--\r\n");
+                writer.close();
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    InputStream in = connection.getInputStream();
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    ByteArrayOutputStream output = new ByteArrayOutputStream();
+                    while ((bytesRead = in.read(buffer)) != -1) {
+                        output.write(buffer, 0, bytesRead);
+                    }
+                    String responseString = output.toString();
+                    return new JSONObject(responseString);
+                } else {
+                    Log.e("Detect Coins", "Error en la llamada al servicio. Código de respuesta: " + responseCode);
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
             }
-            String responseString = output.toString();
-            return new JSONObject(responseString);
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
+
+
+        @Override
+        protected void onPostExecute(JSONObject coins) {
+            if (coins != null) {
+                try {
+                    boolean success = coins.getBoolean("success");
+                    if (success) {
+                        double totalValue = calculateTotalValue(coins);
+                        Toast.makeText(CamaraActivity.this, "Total Value: " + totalValue, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(CamaraActivity.this, "Error1 en la detección de monedas", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(CamaraActivity.this, "Error2 en la detección de monedas", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
