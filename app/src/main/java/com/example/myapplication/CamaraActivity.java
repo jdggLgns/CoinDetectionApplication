@@ -34,7 +34,7 @@ public class CamaraActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int CAMERA_REQUEST_CODE = 101;
-    private static final String SERVER_URL = "http://https://e46f-2a02-2e02-404-9400-2242-8442-3a80-6e82.ngrok-free.app/detect_coins"; // Reemplaza <tu_direccion_ip> por la dirección IP donde se ejecuta el servicio detect_coins
+    private static final String SERVER_URL = "https://6a6a-2a02-2e02-404-9400-7dad-4619-379-f5aa.ngrok-free.app/detect_coins";
     private Button cameraButton;
 
     @Override
@@ -137,7 +137,7 @@ public class CamaraActivity extends AppCompatActivity {
     }
 
 
-        private JSONObject detectCoins(Bitmap photo) {
+    private JSONObject detectCoins(Bitmap photo) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
