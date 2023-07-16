@@ -47,6 +47,7 @@
             android:name=".TransporteActivity"
             android:exported="false">
         </activity>
+
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />

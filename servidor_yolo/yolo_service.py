@@ -11,7 +11,7 @@ def detect_from_file():
     data = request.get_json()
     nombre_fichero = data.get('filename')
     path_fichero = UPLOAD_FOLDER + nombre_fichero
-    resultados = detect_modificado.detect_con_params(weights='runs/train/yolov7-custom12/weights/best.pt',
+    resultados = detect_modificado.detect_con_params(weights='runs/train/yolov7-custom15/weights/best.pt',
                                         source=path_fichero,
                                         img_size=640,
                                         conf_thres=0.25,

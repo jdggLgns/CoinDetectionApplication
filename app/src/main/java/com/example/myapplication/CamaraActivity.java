@@ -3,10 +3,12 @@ package com.example.myapplication;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +41,9 @@ public class CamaraActivity extends AppCompatActivity {
     private static final String SERVER_URL = "https://6a6a-2a02-2e02-404-9400-7dad-4619-379-f5aa.ngrok-free.app/detect_coins";
     private Button cameraButton;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,8 @@ public class CamaraActivity extends AppCompatActivity {
 
         FrameLayout cameraContainer = findViewById(R.id.imagen_view_camara);
         cameraButton = cameraContainer.findViewById(R.id.camera_button);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPreferences.edit();
 
         if (ContextCompat.checkSelfPermission(CamaraActivity.this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -182,6 +189,11 @@ public class CamaraActivity extends AppCompatActivity {
                     if (success) {
                         double totalValue = calculateTotalValue(coins);
                         Toast.makeText(CamaraActivity.this, "Total Value: " + totalValue, Toast.LENGTH_SHORT).show();
+                        editor.putFloat("precio_disponible", (float) totalValue);
+                        editor.apply();
+                        Intent intent = new Intent(CamaraActivity.this, TotalValueActivity.class);
+                        startActivity(intent);
+
                     } else {
                         Toast.makeText(CamaraActivity.this, "Error1 en la detección de monedas", Toast.LENGTH_SHORT).show();
                     }

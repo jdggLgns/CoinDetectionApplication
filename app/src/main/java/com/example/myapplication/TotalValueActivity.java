@@ -1,40 +1,37 @@
 package com.example.myapplication;
 
-import static java.sql.DriverManager.println;
-
-import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TotalValueActivity extends AppCompatActivity {
 
-    private TextView totalValueTextView;
-    private Button detectAnotherImageButton;
+    private SharedPreferences sharedPreferences;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_total_value);
 
-        totalValueTextView = findViewById(R.id.total_value_text_view);
-        detectAnotherImageButton = findViewById(R.id.detect_another_image_button);
-        Intent intent = getIntent();
-        double totalValue = intent.getDoubleExtra("totalValue", 0.0);
-        totalValueTextView.setText("Valor total de las monedas: " + totalValue + "€");
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        detectAnotherImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Volver a la pantalla principal
-               // Intent intent = new Intent(TotalValueActivity.this, MainActivity.class);
-               // startActivity(intent)
-            }
-        });
+        double precioAPagar = getIntent().getDoubleExtra("precio_a_pagar", 0.0);
+        double precioDisponible = sharedPreferences.getFloat("precio_disponible", 0.0f);
+
+        double mayorValor = Math.max(precioAPagar, precioDisponible);
+        double menorValor = Math.min(precioAPagar, precioDisponible);
+        double resta = mayorValor - menorValor;
+
+        TextView textView = findViewById(R.id.total_value_textview);
+        if (mayorValor == precioAPagar) {
+            String mensaje = "Te faltan " + resta + " euros";
+            textView.setText(mensaje);
+        } else {
+            String mensaje = "Te deben " + resta + " euros";
+            textView.setText(mensaje);
+        }
     }
 }
