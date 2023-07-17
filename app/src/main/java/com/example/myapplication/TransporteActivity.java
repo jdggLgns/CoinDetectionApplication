@@ -59,6 +59,7 @@ public class TransporteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TransporteActivity.this, AniadirProductoActivity.class);
+                intent.putExtra("isEdit", false);
                 startActivity(intent);
             }
         });
@@ -66,7 +67,7 @@ public class TransporteActivity extends AppCompatActivity {
         getProductsByUserId();
     }
 
-    private void createTransportButton(String productName, String productPrice) {
+    private void createTransportButton(String productName, String productPrice, int productId) {
         buttonCounter++;
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -81,15 +82,6 @@ public class TransporteActivity extends AppCompatActivity {
         transportButton.setOrientation(LinearLayout.HORIZONTAL);
         transportButton.setPadding(10, 10, 10, 10);
         transportButton.setClickable(true);
-        transportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.putString("precio_a_pagar", productPrice);
-                editor.apply();
-                Intent intent = new Intent(TransporteActivity.this, CamaraActivity.class);
-                startActivity(intent);
-            }
-        });
         transportButton.setBackgroundColor(getResources().getColor(android.R.color.system_neutral2_400));
 
         LinearLayout.LayoutParams imageLayoutParams = new LinearLayout.LayoutParams(
@@ -126,6 +118,44 @@ public class TransporteActivity extends AppCompatActivity {
 
         productInfoLayout.addView(productNameTextView);
         productInfoLayout.addView(productPriceTextView);
+
+        LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(
+                80, // Width
+                120  // Height
+        );
+
+        Button editButton = new Button(this);
+        editButton.setLayoutParams(buttonLayoutParams);
+        editButton.setText("M");
+        editButton.setTextSize(14);
+        editButton.setTextColor(getResources().getColor(android.R.color.white));
+        editButton.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransporteActivity.this, AniadirProductoActivity.class);
+                intent.putExtra("isEdit", true);
+                intent.putExtra("productId", productId);
+                intent.putExtra("productName", productName);
+                intent.putExtra("productPrice", productPrice);
+                startActivity(intent);
+            }
+        });
+        transportButton.addView(editButton);
+
+        Button deleteButton = new Button(this);
+        deleteButton.setLayoutParams(buttonLayoutParams);
+        deleteButton.setText("X");
+        deleteButton.setTextSize(14);
+        deleteButton.setTextColor(getResources().getColor(android.R.color.white));
+        deleteButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteProduct(productId);
+            }
+        });
+        transportButton.addView(deleteButton);
 
         transportButton.addView(productImageView);
         transportButton.addView(productInfoLayout);
@@ -179,14 +209,53 @@ public class TransporteActivity extends AppCompatActivity {
                         JSONObject product = products.getJSONObject(i);
                         String productName = product.getString("descripcion");
                         String productPrice = product.getString("precio");
+                        int productId = product.getInt("id");
 
-                        createTransportButton(productName, productPrice);
+                        createTransportButton(productName, productPrice, productId);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             } else {
                 Toast.makeText(TransporteActivity.this, "Error al obtener los productos", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void deleteProduct(int productId) {
+        new DeleteProductTask().execute(productId);
+    }
+
+    private class DeleteProductTask extends AsyncTask<Integer, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            int productId = params[0];
+
+            try {
+                URL url = new URL("http://" + ipServices + "/products/" + productId);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("DELETE");
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                Toast.makeText(TransporteActivity.this, "Producto eliminado exitosamente", Toast.LENGTH_SHORT).show();
+                transportButtonLayout.removeAllViews();
+                getProductsByUserId();
+            } else {
+                Toast.makeText(TransporteActivity.this, "Error al eliminar el producto", Toast.LENGTH_SHORT).show();
             }
         }
     }

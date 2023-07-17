@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -23,6 +25,11 @@ public class AniadirProductoActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
 
+    private boolean isEdit;
+    private int productId;
+    private String originalProductName;
+    private String originalProductPrice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +41,31 @@ public class AniadirProductoActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
+        Intent intent = getIntent();
+        isEdit = intent.getBooleanExtra("isEdit", false);
+        productId = intent.getIntExtra("productId", -1);
+        originalProductName = intent.getStringExtra("productName");
+        originalProductPrice = intent.getStringExtra("productPrice");
+
+        if (isEdit && productId != -1 && originalProductName != null && originalProductPrice != null) {
+            productNameEditText.setText(originalProductName);
+            priceEditText.setText(originalProductPrice);
+        }
+
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String productName = productNameEditText.getText().toString();
                 String price = priceEditText.getText().toString();
                 String userId = sharedPreferences.getString("userId", "");
-                //coger el tipo de producto a traveés de la sesión
-                CreateProductTask createProductTask = new CreateProductTask();
-                createProductTask.execute(userId, productName, price);
+
+                if (isEdit) {
+                    UpdateProductTask updateProductTask = new UpdateProductTask();
+                    updateProductTask.execute(String.valueOf(productId), productName, price);
+                } else {
+                    CreateProductTask createProductTask = new CreateProductTask();
+                    createProductTask.execute(userId, productName, price);
+                }
             }
         });
     }
@@ -88,6 +111,7 @@ public class AniadirProductoActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
+                Toast.makeText(AniadirProductoActivity.this, "Producto creado exitosamente", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AniadirProductoActivity.this, TransporteActivity.class);
                 startActivity(intent);
             } else {
@@ -95,5 +119,54 @@ public class AniadirProductoActivity extends AppCompatActivity {
             }
         }
     }
-}
 
+    private class UpdateProductTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            String productId = params[0];
+            String productName = params[1];
+            String price = params[2];
+
+            ProjectProperties projectProperties = new ProjectProperties();
+            Properties properties = projectProperties.getProperties();
+            String ip = properties.getProperty("ip_services");
+
+            String url = "http://" + ip + "/products/" + productId;
+
+            try {
+                URL apiUrl = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+                connection.setRequestMethod("PUT");
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setDoOutput(true);
+                String requestBody = "{\"descripcion\":\"" + productName + "\", \"precio\":\"" + price + "\"}";
+                DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+                wr.writeBytes(requestBody);
+                wr.flush();
+                wr.close();
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Toast.makeText(AniadirProductoActivity.this, "Producto actualizado exitosamente", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AniadirProductoActivity.this, TransporteActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(AniadirProductoActivity.this, "Error al actualizar el producto", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+}
